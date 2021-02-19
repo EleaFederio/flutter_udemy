@@ -25,19 +25,27 @@ class _MyAppState extends State<MyApp>{
   // the assign value is final at the same time const so that the value cannot be changed
   final _questions = const [
     {'questionText': "What's is your favorite color?", 'answer': [
-      'red', 'blue', 'green'
+      {'text': 'Red', 'score': 10}, 
+      {'text': 'Blue', 'score': 50},
+      {'text': 'Green', 'score': 100}
     ]},
     {'questionText': "What's is your favorite fruit?", 'answer': [
-      'avocado', 'banana', 'apple'
+      {'text': 'Avocado', 'score': 10},
+      {'text': 'Banana', 'score': 50},
+      {'text': 'Apple', 'score': 100}
     ]},
     {'questionText': "What's your favorite animal?", 'answer': [
-      'dog', 'dinasaur', 'kingkong', 'talapang'
+      {'text': 'Dog', 'score': 10},
+      {'text': 'Dinasaur', 'score': 50},
+      {'text': 'Elepant', 'score': 75},
+      {'text': 'Ant', 'score': 100}
     ]}
   ];
 
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion(){
+  void _answerQuestion(int score){
     if(_questionIndex < _questions.length){
       // setState calls build method to rerender the component that has changed
       setState(() {
@@ -45,8 +53,18 @@ class _MyAppState extends State<MyApp>{
       });
     }
 
+    // this is same as _totalScore = _totalScore + score
+    _totalScore += score;
+
     // print(_questionIndex);
     print('Answer Choosen');
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
   }
 
   Widget build(BuildContext context){
@@ -66,7 +84,7 @@ class _MyAppState extends State<MyApp>{
           Quiz(questionIndex: _questionIndex, answerQuestion: _answerQuestion, questions: _questions)
         // ternary operator
         :
-          Result()        
+          Result(_totalScore, _resetQuiz())        
       )
     );
   }
